@@ -7,3 +7,5 @@ dotnet new gitignore
 dotnet new mvc -o Pokedex
 cd Pokedex
 
+dotnet add package Microsoft.EntityFrameworkCore --version 9.0.8
+dotnet add package Pomelo.EntityFrameworkCore.MySql --version 9.0.0

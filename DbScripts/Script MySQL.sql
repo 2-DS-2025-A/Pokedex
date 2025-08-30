@@ -40,7 +40,7 @@ ALTER TABLE Pokemon ADD CONSTRAINT FK_Pokemon_Genero
 
 
 CREATE TABLE IF NOT EXISTS PokemonTipo (
-	PokemonNumero	INT UNSIGNED NOT NULL,
+	  PokemonNumero	INT UNSIGNED NOT NULL,
     TipoId			INT UNSIGNED NOT NULL,
     PRIMARY KEY(PokemonNumero, TipoId)
 );
