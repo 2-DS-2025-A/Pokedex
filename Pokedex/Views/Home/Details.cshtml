@@ -1,0 +1,8 @@
+@model List<Pokemon>
+@{
+    ViewData["Title"] = "Pokemon";
+    string BackgroundColor(string cor) {
+        return cor.Replace("1)", "0.75)");
+    }
+}
+
