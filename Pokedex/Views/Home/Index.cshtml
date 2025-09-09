@@ -1,4 +1,4 @@
-﻿@model List<Pokemon>
+﻿@model HomeVM
 @{
     ViewData["Title"] = "Home";
     string BackgroundColor(string cor) {
@@ -11,51 +11,26 @@
         <div class="col mx-auto text-center">
             <h1 class="display-4 text-white">Pokédex</h1>
             <div class="my-3">
-                <button id="btn-all" class="btn btn-md my-2 text-white bg-secondary btn-filter">Ver
-                    Todos</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#aab">Aço</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#39f">Água</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#76e">Dragão</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#fc3">Elétrico</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#e9e">Fada</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#66b">Fantasma</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#f42">Fogo</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#6cf">Gelo</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#ab6">Inseto</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#b54">Lutador</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#aa9">Normal</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#ba6">Pedra</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#7c5">Planta</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#f59">Psíquico</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#754">Sombrio</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#db5">Terrestre</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#a59">Venenoso</button>
-                <button id="btn-aço" class="btn btn-sm my-2 text-white btn-filter"
-                    style="background-color:#89f">Voador</button>
+                <button id="btn-all" onclick="filter('')"
+                    class="btn btn-md my-2 text-white bg-secondary btn-filter">
+                    Ver Todos
+                </button>
+                
+                @foreach (var tipo in Model.Tipos)
+                {
+                    <button id="btn-@tipo.Nome" class="btn btn-sm my-2 text-white btn-filter"
+                        style="background-color:@tipo.Cor"
+                        onclick="filter('@tipo.Nome')">
+                        @tipo.Nome
+                    </button>
+                }
             </div>
         </div>
     </div>
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
 
-        @foreach (var pokemon in Model)
+        @foreach (var pokemon in Model.Pokemons)
         {
             <!-- Card Pokemon - Inicio -->
             <div class="col poke @string.Join(' ', pokemon.Tipos.Select(t => t.Tipo.Nome))">
@@ -82,9 +57,12 @@
             </div>
             <!-- Card Pokemon - Fim -->
         }
-        <div id="zeroPokemon" class="col-lg-12 text-center" hidden>
+        <div id="zeroPokemon" class="col-lg-12 text-center d-none">
             <h1 class="my-3 text-danger">Nenhum Pokemon Encontrado</h1>
         </div>
     </div>
-
 </div>
+
+@section Scripts {
+    <script src="~/js/site.js"></script>
+}
