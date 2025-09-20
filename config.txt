@@ -7,5 +7,23 @@ dotnet new gitignore
 dotnet new mvc -o Pokedex
 cd Pokedex
 
+-- Pacotes de acesso e manipulação do banco
 dotnet add package Microsoft.EntityFrameworkCore --version 9.0.8
 dotnet add package Pomelo.EntityFrameworkCore.MySql --version 9.0.0
+
+
+dotnet aspnet-codegenerator
+dotnet tool install --global dotnet-aspnet-codegenerator --version 9.0.0
+
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design --version 9.0.0
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 9.0.8
+
+
+
+dotnet aspnet-codegenerator controller -name RegioesController --model Regiao --dataContext AppDbContext --layout "~/Views/Shared/_LayoutAdmin.cshtml" -outDir Controllers
+
+dotnet aspnet-codegenerator controller -name TiposController --model Tipo --dataContext AppDbContext --layout "~/Views/Shared/_LayoutAdmin.cshtml" -outDir Controllers
+
+dotnet aspnet-codegenerator controller -name GenerosController --model Genero --dataContext AppDbContext --layout "~/Views/Shared/_LayoutAdmin.cshtml" -outDir Controllers
+
+dotnet aspnet-codegenerator controller -name PokemonsController --model Pokemon --dataContext AppDbContext --layout "~/Views/Shared/_LayoutAdmin.cshtml" -outDir Controllers
