@@ -5,44 +5,45 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Index</h1>
-
+<h1>Pokemon</h1>
+<h4>Lista</h4>
+<hr />
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-danger px-5" asp-action="Create">
+        <i class="bi bi-plus-circle"></i> Adicionar
+    </a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Numero)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>Tipos</th>
             <th>
                 @Html.DisplayNameFor(model => model.Regiao)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Genero)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Altura)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Peso)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Imagem)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Animacao)
-            </th>
-            <th></th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Numero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @string.Join(" e ", item.Tipos.Select(t => t.Tipo.Nome))
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Regiao.Nome)
             </td>
@@ -50,27 +51,15 @@
                 @Html.DisplayFor(modelItem => item.Genero.Nome)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Altura)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Peso)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Imagem)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Animacao)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Numero">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Numero">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Numero">Delete</a>
+                <a class="text-decoration-none text-warning" asp-action="Edit" asp-route-id="@item.Numero">
+                    <i class="bi bi-pencil-fill" title="Alterar"></i>
+                </a> |
+                <a class="text-decoration-none" asp-action="Details" asp-route-id="@item.Numero">
+                    <i class="bi bi-search" title="Detalhes"></i>
+                </a> |
+                <a class="text-decoration-none text-danger" asp-action="Delete" asp-route-id="@item.Numero">
+                    <i class="bi bi-trash3-fill" title="Excluir"></i>
+                </a>
             </td>
         </tr>
 }
