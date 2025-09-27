@@ -13,7 +13,7 @@
         <i class="bi bi-plus-circle"></i> Adicionar
     </a>
 </p>
-<table class="table">
+<table class="table table-striped" id="table">
     <thead>
         <tr>
             <th>
@@ -33,7 +33,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Numero)
@@ -53,15 +53,26 @@
             <td>
                 <a class="text-decoration-none text-warning" asp-action="Edit" asp-route-id="@item.Numero">
                     <i class="bi bi-pencil-fill" title="Alterar"></i>
-                </a> |
-                <a class="text-decoration-none" asp-action="Details" asp-route-id="@item.Numero">
+                </a> 
+                <a class="text-decoration-none mx-2" asp-action="Details" asp-route-id="@item.Numero">
                     <i class="bi bi-search" title="Detalhes"></i>
-                </a> |
+                </a> 
                 <a class="text-decoration-none text-danger" asp-action="Delete" asp-route-id="@item.Numero">
                     <i class="bi bi-trash3-fill" title="Excluir"></i>
                 </a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
+
+@section Styles {
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
+}
+
+@section Scripts {
+    <script src="//cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
+    <script>
+        let table = new DataTable('#table');
+    </script>
+}

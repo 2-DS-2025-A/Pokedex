@@ -13,10 +13,12 @@ namespace Pokedex.Controllers
     public class PokemonsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _host;
 
-        public PokemonsController(AppDbContext context)
+        public PokemonsController(AppDbContext context, IWebHostEnvironment host)
         {
             _context = context;
+            _host = host;
         }
 
         // GET: Pokemons
@@ -53,8 +55,10 @@ namespace Pokedex.Controllers
         // GET: Pokemons/Create
         public IActionResult Create()
         {
-            ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Nome");
-            ViewData["RegiaoId"] = new SelectList(_context.Regioes, "Id", "Nome");
+            ViewData["GeneroId"] =
+                new SelectList(_context.Generos, "Id", "Nome");
+            ViewData["RegiaoId"] =
+                new SelectList(_context.Regioes, "Id", "Nome");
             return View();
         }
 
@@ -63,7 +67,7 @@ namespace Pokedex.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Numero,RegiaoId,GeneroId,Nome,Descricao,Altura,Peso,Imagem,Animacao")] Pokemon pokemon)
+        public async Task<IActionResult> Create([Bind("Numero,RegiaoId,GeneroId,Nome,Descricao,Altura,Peso,Imagem,Animacao")] Pokemon pokemon, IFormFile Arquivo)
         {
             if (ModelState.IsValid)
             {
