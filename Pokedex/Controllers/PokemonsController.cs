@@ -55,10 +55,9 @@ namespace Pokedex.Controllers
         // GET: Pokemons/Create
         public IActionResult Create()
         {
-            ViewData["GeneroId"] =
-                new SelectList(_context.Generos, "Id", "Nome");
-            ViewData["RegiaoId"] =
-                new SelectList(_context.Regioes, "Id", "Nome");
+            ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Nome");
+            ViewData["RegiaoId"] = new SelectList(_context.Regioes, "Id", "Nome");
+            ViewData["Tipos"] = new SelectList(_context.Tipos, "Id", "Nome");
             return View();
         }
 
@@ -67,16 +66,48 @@ namespace Pokedex.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Numero,RegiaoId,GeneroId,Nome,Descricao,Altura,Peso,Imagem,Animacao")] Pokemon pokemon, IFormFile Arquivo)
+        public async Task<IActionResult> Create([Bind("Numero,RegiaoId,GeneroId,Nome,Descricao,Altura,Peso,Imagem,Animacao")] Pokemon pokemon, IFormFile Arquivo, List<string> SelectTypes)
         {
+            ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Nome", pokemon.GeneroId);
+            ViewData["RegiaoId"] = new SelectList(_context.Regioes, "Id", "Nome", pokemon.RegiaoId);
             if (ModelState.IsValid)
             {
+                if (PokemonExists(pokemon.Numero))
+                {
+                    ModelState.AddModelError("", "Número já cadastrado, verifique!");
+                    return View(pokemon);
+                }
+
+                if (Arquivo != null)
+                {
+                    string wwwRootPath = _host.WebRootPath;
+                    string filename = pokemon.Numero.ToString("000")
+                        + Path.GetExtension(Arquivo.FileName);
+                    string uploads = Path.Combine(wwwRootPath, @"img\pokemons");
+                    string newFile = Path.Combine(uploads, filename);
+                    using (var stream = new FileStream(newFile, FileMode.Create))
+                    {
+                        Arquivo.CopyTo(stream);
+                    }
+                    pokemon.Imagem = @"\img\pokemons\" + filename;
+                }
+
+                pokemon.Tipos = new List<PokemonTipo>();
+                foreach (var tipo in SelectTypes)
+                {
+                    pokemon.Tipos.Add(
+                        new PokemonTipo
+                        {
+                            PokemonNumero = pokemon.Numero,
+                            TipoId = uint.Parse(tipo)
+                        }
+                    );
+                }
+
                 _context.Add(pokemon);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Nome", pokemon.GeneroId);
-            ViewData["RegiaoId"] = new SelectList(_context.Regioes, "Id", "Nome", pokemon.RegiaoId);
             return View(pokemon);
         }
 
